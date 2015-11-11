@@ -6,9 +6,7 @@
 #
 # == Usage
 #
-#   irb -r packetfu-shell.rb
-# or
-#   sudo irb -r packetfu-shell.rb
+#   sudo ruby -I lib packetfu-shell.rb
 #
 # If run as root, packet capturing/injecting is available, which includes
 # access to Utils.whoami?
@@ -43,10 +41,8 @@
 #  6b 2c 20 74 77 69 64 64 6c 69 6e 67 20 79 6f 75   k, twiddling you
 #  72 20 62 69 74 73 2e                              r bits.
 #  => nil
-
-$: << File.expand_path(File.dirname(__FILE__) + "/../lib/")
-require './examples'
 require 'packetfu'
+require 'irb'
 
 module PacketFu
   def whoami?(args={})
@@ -65,7 +61,7 @@ include PacketFu
 #
 def packetfu_ascii_art
   puts <<EOM
- _______  _______  _______  _        _______ _________ _______          
+ _______  _______  _______  _        _______ _________ _______
 (  ____ )(  ___  )(  ____ \\| \\    /\\(  ____ \\\\__   __/(  ____ \\|\\     /|
 | (    )|| (   ) || (    \\/|  \\  / /| (    \\/   ) (   | (    \\/| )   ( |
 | (____)|| (___) || |      |  (_/ / | (__       | |   | (__    | |   | |
@@ -94,7 +90,7 @@ def banner
     print "IP:  %-15s Mac: %s" % [$packetfu_default.ip_saddr, $packetfu_default.eth_saddr]
     puts "   Gateway: %s" % $packetfu_default.eth_daddr
     print "Net: %-15s" % [Pcap.lookupnet($packetfu_default.iface)][0]
-    print "  " * 13 
+    print "  " * 13
     puts "Iface:   %s" % [($packetfu_default.iface)]
     puts ">>> Packet capturing/injecting enabled."
   else
@@ -112,3 +108,5 @@ rescue RuntimeError
 end
 
 banner
+
+IRB.start
